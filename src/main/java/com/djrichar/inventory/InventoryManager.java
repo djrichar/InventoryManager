@@ -75,6 +75,7 @@ public class InventoryManager {
      * Test method helper to reset results across
      */
     protected static void clearResults(){
+        getInstance().hasInventory = true;
         getInstance().processedOutput = new StringBuilder();
     }
 }
