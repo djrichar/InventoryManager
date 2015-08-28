@@ -1,10 +1,8 @@
 package com.djrichar.inventory;
 
 import com.djrichar.DataStore;
-import com.djrichar.inventory.InventoryItem;
-import com.djrichar.inventory.InventoryManager;
 import com.djrichar.runner.OrderGenerator;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,7 +18,7 @@ public class OrderGeneratorTest {
 
     @BeforeClass
     public static void setup() throws SQLException, ClassNotFoundException {
-        DataStore.initialize("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
+        DataStore.initialize("jdbc:h2:mem:test2;DB_CLOSE_DELAY=-1");
         DataStore ds = new DataStore();
         for(InventoryItem ii : createItems()){
             ds.insertInventoryItem(ii);
