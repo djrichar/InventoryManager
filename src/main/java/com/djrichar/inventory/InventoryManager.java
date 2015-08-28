@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * this class is responsible for processing all Orders in the order they are recieved.
+ * this class is responsible for processing all Orders in the order they are relieved.
  */
 public class InventoryManager {
     private static InventoryManager INSTANCE = null;
