@@ -14,6 +14,12 @@ public class DataStore {
     private static final Logger log = LoggerFactory.getLogger(DataStore.class);
     private static String jdbcConnectionString = "jdbc:h2:mem:runner;DB_CLOSE_DELAY=-1";
 
+    /**
+     * this is a simple initialization of the h2 db. with 2 tables InventoryItem and OrderLine
+     * @param jdbcConnectionString
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static void initialize(String jdbcConnectionString) throws ClassNotFoundException, SQLException {
         if(jdbcConnectionString!=null){
             DataStore.jdbcConnectionString = jdbcConnectionString;
@@ -25,7 +31,7 @@ public class DataStore {
                     "name VARCHAR(32) PRIMARY KEY, " +
                     "stock INT DEFAULT 0, " +
                     "backordered INT DEFAULT 0)");
-            statement.execute("CREATE TABLE OrderLine(" +
+            statement.execute("CREATE TABLE IF NOT EXISTS OrderLine(" +
                     "id IDENTITY NOT NULL IDENTITY, " +
                     "itemName VARCHAR(32) NOT NULL, " +
                     "status VARCHAR(15) NOT NULL, " +
@@ -68,6 +74,10 @@ public class DataStore {
         return null;
     }
 
+    /**
+     * get the number of Items still in stock for all items
+     * @return
+     */
     public int calculateTotalInventory(){
         try(Connection connection = getConnection();
             PreparedStatement statement = connection.prepareStatement("SELECT SUM(stock) FROM InventoryItem")
@@ -81,6 +91,11 @@ public class DataStore {
         }
         return 0;
     }
+
+    /**
+     * create a new Inventory Item
+     * @param item
+     */
     public void insertInventoryItem(InventoryItem item) {
         try(Connection connection = getConnection();
             PreparedStatement statement = connection.prepareStatement("INSERT INTO InventoryItem VALUES(?,?,?)")
@@ -94,6 +109,11 @@ public class DataStore {
         }
 
     }
+
+    /**
+     * update and existing inventory item
+     * @param item
+     */
     public void updateInventoryItem(InventoryItem item) {
         try(Connection connection = getConnection();
             PreparedStatement statement = connection.prepareStatement("UPDATE InventoryItem SET stock=?, backordered=? WHERE name = ?")
@@ -107,6 +127,10 @@ public class DataStore {
         }
     }
 
+    /**
+     * create a new OrderLine
+     * @param line
+     */
     public void insertOrderLine(OrderLine line) {
         try(Connection connection = getConnection();
             PreparedStatement statement = connection.prepareStatement("INSERT INTO OrderLine VALUES(null,?,?,?)")
@@ -119,18 +143,6 @@ public class DataStore {
             log.error(String.format("An Error Occurred when inserting InventoryItem %s", line), e);
         }
 
-    }
-    public void updateOrderLine(OrderLine line) {
-        try(Connection connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement("UPDATE OrderLine SET(status=?,quantity=?) WHERE itemName == ?")
-        ) {
-            statement.setString(1, line.getStatus().name());
-            statement.setLong(2, line.getQuantity());
-            statement.setString(3, line.getItem());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            log.error(String.format("An Error Occurred when updating InventoryItem %s", line), e);
-        }
     }
 
 }
