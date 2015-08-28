@@ -35,9 +35,8 @@ public class DataStore {
                     "id IDENTITY NOT NULL IDENTITY, " +
                     "itemName VARCHAR(32) NOT NULL, " +
                     "status VARCHAR(15) NOT NULL, " +
-                    "quantity INT DEFAULT 0)");
-//            ," +
-//                    "FOREIGN KEY (itemName) REFERENCES InventoryItem(name))");
+                    "quantity INT DEFAULT 0," +
+                    "FOREIGN KEY (itemName) REFERENCES InventoryItem(name))");
             statement.close();
         }
     }
