@@ -1,16 +1,16 @@
 package com.djrichar.inventory;
 
 import com.djrichar.DataStore;
-import com.djrichar.order.Fulfillment;
-import com.djrichar.order.InventoryItem;
-import com.djrichar.order.Order;
-import com.djrichar.order.OrderLine;
+import com.djrichar.entity.Fulfillment;
+import com.djrichar.entity.InventoryItem;
+import com.djrichar.entity.Order;
+import com.djrichar.entity.OrderLine;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.slf4j.LoggerFactory;
 
 /**
- * this class is responsible for processing all Orders in the order they are relieved.
+ * this class is responsible for processing all Orders in the entity they are relieved.
  */
 public class InventoryManager {
     private static InventoryManager INSTANCE = null;
@@ -45,7 +45,7 @@ public class InventoryManager {
     }
 
     /**
-     * process one order at a time.
+     * process one entity at a time.
      * ensure the inventoryItem is updated
      * ensures the fulfillment for an orderLine is updated
      * update the inventoryTotal if an item is shipped.
@@ -80,7 +80,7 @@ public class InventoryManager {
             session.save(order);
             session.getTransaction().commit();
         } catch (Exception e) {
-            LoggerFactory.getLogger(this.getClass()).error("unable to store order: ", e);
+            LoggerFactory.getLogger(this.getClass()).error("unable to store entity: ", e);
             throw new RuntimeException("Unable to persist Order", e);
         }
         if (updateTotal) {

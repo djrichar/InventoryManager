@@ -1,10 +1,10 @@
 package com.djrichar.inventory;
 
 import com.djrichar.DataStore;
-import com.djrichar.order.Fulfillment;
-import com.djrichar.order.InventoryItem;
-import com.djrichar.order.Order;
-import com.djrichar.order.OrderLine;
+import com.djrichar.entity.Fulfillment;
+import com.djrichar.entity.InventoryItem;
+import com.djrichar.entity.Order;
+import com.djrichar.entity.OrderLine;
 import org.hibernate.Session;
 import org.junit.Assert;
 import org.junit.Before;

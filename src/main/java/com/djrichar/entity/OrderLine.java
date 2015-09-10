@@ -1,10 +1,10 @@
-package com.djrichar.order;
+package com.djrichar.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * the Order line contains a mapping to the order, inventory and fulfillment
+ * the Order line contains a mapping to the entity, inventory and fulfillment
  * there is a generated Id
  * there are many OrderLines to a single Order
  * there are mand OrderLines to a single Inventory

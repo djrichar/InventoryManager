@@ -1,4 +1,4 @@
-package com.djrichar.order;
+package com.djrichar.entity;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,7 +15,7 @@ public class OrderTest {
         order.addLine(new OrderLine("A", 1));
         order.addLine(new OrderLine("B", 4));
 
-        Assert.assertTrue("order must have all lines with a quantity between 1 and 5 inclusive", order.isValid());
+        Assert.assertTrue("entity must have all lines with a quantity between 1 and 5 inclusive", order.isValid());
     }
     @Test
     public void orderValidTotalSumGreateThan5Test(){
@@ -24,7 +24,7 @@ public class OrderTest {
         order.addLine(new OrderLine("A", 1));
         order.addLine(new OrderLine("B", 4));
         order.addLine(new OrderLine("C", 5));
-        Assert.assertTrue("order must have all lines with a quantity between 1 and 5 inclusive",order.isValid());
+        Assert.assertTrue("entity must have all lines with a quantity between 1 and 5 inclusive",order.isValid());
     }
     @Test
     public void orderValidTwoLinesOfSameItemTest(){
@@ -33,21 +33,21 @@ public class OrderTest {
         order.addLine(new OrderLine("A", 1));
         order.addLine(new OrderLine("B", 4));
         order.addLine(new OrderLine("B", 5));
-        Assert.assertTrue("order must have all lines with a quantity between 1 and 5 inclusive",order.isValid());
+        Assert.assertTrue("entity must have all lines with a quantity between 1 and 5 inclusive",order.isValid());
     }
     @Test
     public void orderInvalidTest(){
         Order order = new Order();
         order.setHeader("1");
         order.addLine(new OrderLine("A", 6));
-        Assert.assertFalse("order must have all lines with a quantity between 1 and 5 inclusive", order.isValid());
+        Assert.assertFalse("entity must have all lines with a quantity between 1 and 5 inclusive", order.isValid());
     }
     @Test
     public void orderInvalid0Test(){
         Order order = new Order();
         order.setHeader("1");
         order.addLine(new OrderLine("A", 0));
-        Assert.assertFalse("order must have all lines with a quantity between 1 and 5 inclusive", order.isValid());
+        Assert.assertFalse("entity must have all lines with a quantity between 1 and 5 inclusive", order.isValid());
     }
 
     @Test

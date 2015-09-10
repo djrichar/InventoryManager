@@ -24,9 +24,9 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">create</property>
 
-        <mapping class="com.djrichar.order.Order"/>
-        <mapping class="com.djrichar.order.OrderLine"/>
-        <mapping class="com.djrichar.order.InventoryItem"/>
-        <mapping class="com.djrichar.order.Fulfillment"/>
+        <mapping class="com.djrichar.entity.Order"/>
+        <mapping class="com.djrichar.entity.OrderLine"/>
+        <mapping class="com.djrichar.entity.InventoryItem"/>
+        <mapping class="com.djrichar.entity.Fulfillment"/>
     </session-factory>
 </hibernate-configuration>

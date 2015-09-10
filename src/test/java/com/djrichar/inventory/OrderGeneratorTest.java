@@ -1,8 +1,8 @@
 package com.djrichar.inventory;
 
 import com.djrichar.DataStore;
-import com.djrichar.order.InventoryItem;
-import com.djrichar.order.Order;
+import com.djrichar.entity.InventoryItem;
+import com.djrichar.entity.Order;
 import com.djrichar.runner.OrderGenerator;
 import org.hibernate.Session;
 import org.junit.Assert;

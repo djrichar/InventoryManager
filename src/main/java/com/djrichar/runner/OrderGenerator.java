@@ -2,9 +2,9 @@ package com.djrichar.runner;
 
 import com.djrichar.DataStore;
 import com.djrichar.inventory.InventoryManager;
-import com.djrichar.order.InventoryItem;
-import com.djrichar.order.Order;
-import com.djrichar.order.OrderLine;
+import com.djrichar.entity.InventoryItem;
+import com.djrichar.entity.Order;
+import com.djrichar.entity.OrderLine;
 import org.hibernate.Session;
 
 import java.sql.SQLException;
@@ -29,7 +29,7 @@ public class OrderGenerator implements Callable<String> {
     }
 
     /**
-     * helper method to randomly generate and order
+     * helper method to randomly generate and entity
      *
      * @return
      */

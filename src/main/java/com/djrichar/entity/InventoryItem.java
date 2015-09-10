@@ -1,4 +1,4 @@
-package com.djrichar.order;
+package com.djrichar.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

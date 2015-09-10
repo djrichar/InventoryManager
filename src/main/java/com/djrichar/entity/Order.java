@@ -1,4 +1,4 @@
-package com.djrichar.order;
+package com.djrichar.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -7,8 +7,8 @@ import java.util.List;
 
 /**
  * Entity represents an Order.
- * the order will have a genereated Id
- * the order will have a header.  the system may modify the header to identify the source
+ * the entity will have a genereated Id
+ * the entity will have a header.  the system may modify the header to identify the source
  * and Order contains N number of OrderLines.
  */
 @Entity
@@ -41,7 +41,7 @@ public class Order implements Serializable {
 
     /**
      * get the lines for this Order
-     * the List is not modifiable you must add new Lines to the order.
+     * the List is not modifiable you must add new Lines to the entity.
      *
      * @return
      */
