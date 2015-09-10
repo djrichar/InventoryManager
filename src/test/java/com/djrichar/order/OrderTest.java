@@ -11,7 +11,7 @@ public class OrderTest {
     @Test
     public void orderValidTest() {
         Order order = new Order();
-        order.setHeader(1l);
+        order.setHeader("1");
         order.addLine(new OrderLine("A", 1));
         order.addLine(new OrderLine("B", 4));
 
@@ -20,7 +20,7 @@ public class OrderTest {
     @Test
     public void orderValidTotalSumGreateThan5Test(){
         Order order = new Order();
-        order.setHeader(1l);
+        order.setHeader("1");
         order.addLine(new OrderLine("A", 1));
         order.addLine(new OrderLine("B", 4));
         order.addLine(new OrderLine("C", 5));
@@ -29,7 +29,7 @@ public class OrderTest {
     @Test
     public void orderValidTwoLinesOfSameItemTest(){
         Order order = new Order();
-        order.setHeader(1l);
+        order.setHeader("1");
         order.addLine(new OrderLine("A", 1));
         order.addLine(new OrderLine("B", 4));
         order.addLine(new OrderLine("B", 5));
@@ -38,36 +38,59 @@ public class OrderTest {
     @Test
     public void orderInvalidTest(){
         Order order = new Order();
-        order.setHeader(1l);
+        order.setHeader("1");
         order.addLine(new OrderLine("A", 6));
         Assert.assertFalse("order must have all lines with a quantity between 1 and 5 inclusive", order.isValid());
     }
     @Test
     public void orderInvalid0Test(){
         Order order = new Order();
-        order.setHeader(1l);
+        order.setHeader("1");
         order.addLine(new OrderLine("A", 0));
         Assert.assertFalse("order must have all lines with a quantity between 1 and 5 inclusive", order.isValid());
     }
 
     @Test
-    public void orderStatTest(){
-        OrderLine line = new OrderLine(null, 0);
-        Assert.assertEquals("null:[0,0,0]", line.stat());
+    public void orderStringTest(){
+        Order order = new Order();
+        Assert.assertEquals("Order{hdr:null, lines:[]}", order.toString());
+
+        order.setHeader("A%$null123");
+        Assert.assertEquals("Order{hdr:A%$null123, lines:[]}", order.toString());
+
+        order.setHeader("1");
+        order.addLine(new OrderLine((InventoryItem) null, 9));
+        order.addLine(new OrderLine(new InventoryItem("A"), 3));
+
+        Assert.assertEquals("Order{hdr:1, lines:" +
+                "[??:null, A:null]}",
+                order.toString());
+    }
+
+    @Test
+    public void orderLineStringTest(){
+        OrderLine line = new OrderLine((String)null, 0);
+        Assert.assertEquals("null:null", line.toString());
+
+        line = new OrderLine((InventoryItem)null, 0);
+        line.getFulfillment();
+        Assert.assertEquals("??:{ q:0, b:0, o:0, stock:0, backordered:0}", line.toString());
 
         line = new OrderLine("A", 0);
-        Assert.assertEquals("A:[0,0,0]", line.stat());
+        line.getFulfillment();
+        Assert.assertEquals("A:{ q:0, b:0, o:0, stock:0, backordered:0}", line.toString());
 
         line = new OrderLine("B", 5);
-        line.setStatus(OrderLine.Status.FILLED);
-        Assert.assertEquals("B:[5,5,0]", line.stat());
+        line.getFulfillment().setStatus(Fulfillment.Status.FILLED);
+        Assert.assertEquals("B:{ q:5, b:0, o:5, stock:0, backordered:0}", line.toString());
 
         line = new OrderLine("C", 3);
-        line.setStatus(OrderLine.Status.BACKORDERED);
-        Assert.assertEquals("C:[3,0,3]", line.stat());
+        line.getFulfillment().setStatus(Fulfillment.Status.BACKORDERED);
+        Assert.assertEquals("C:{ q:3, b:3, o:0, stock:0, backordered:0}", line.toString());
 
         line = new OrderLine("D", 2);
-        Assert.assertEquals("D:[2,0,0]", line.stat());
+        line.getFulfillment();
+        Assert.assertEquals("D:{ q:2, b:0, o:0, stock:0, backordered:0}", line.toString());
 
     }
 }

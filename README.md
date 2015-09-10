@@ -9,7 +9,7 @@ cd to build/libs && java -jar InventoryManager-all-1.0-SNAPSHOT.jar
 output format is as follows
 ```
 Header:<id>-<streamid>:[
-  <itemName>:[<askfor>,<got>,<backordered>]{<currentlyInStock>,<currentlyBackOrdered>},
+  <name>:[<askfor>,<got>,<backordered>]{<currentlyInStock>,<currentlyBackOrdered>},
   ...
 ]
 ```
