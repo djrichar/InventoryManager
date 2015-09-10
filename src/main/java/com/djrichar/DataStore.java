@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 
 /**
  * TODO move Objects to JPA
@@ -19,7 +18,10 @@ public class DataStore {
     private static final Logger log = LoggerFactory.getLogger(DataStore.class);
     private static SessionFactory sessionFactory;
 
-    public static SessionFactory getSessionFactory(){return sessionFactory;}
+    public static SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
     /**
      * Start the Hibernate ORM and generate the tables in the H2 DB
      */
@@ -46,17 +48,16 @@ public class DataStore {
      *
      * @param key
      * @return Item found or null if not found
-     * @throws DataStoreException an error against the DataStore
      */
-    public <T> T lookUpItem(Class<T> tClass, Serializable key){
+    public <T> T lookUpItem(Class<T> tClass, Serializable key) {
         try (Session session = sessionFactory.openSession();) {
             return session.byId(tClass).load(key);
         }
     }
 
-    public <T> T save(T o){
+    public <T> T save(T o) {
         try (Session session = sessionFactory.openSession();) {
-            return (T)session.merge(o);
+            return (T) session.merge(o);
         }
     }
 

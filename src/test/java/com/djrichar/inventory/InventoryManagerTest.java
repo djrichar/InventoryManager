@@ -1,7 +1,6 @@
 package com.djrichar.inventory;
 
 import com.djrichar.DataStore;
-import com.djrichar.DataStoreException;
 import com.djrichar.order.Fulfillment;
 import com.djrichar.order.InventoryItem;
 import com.djrichar.order.Order;
@@ -55,7 +54,7 @@ public class InventoryManagerTest {
     }
 
     @Test
-    public void processOneOrder() throws DataStoreException {
+    public void processOneOrder() {
         Map<OrderLine,String> lineToExpectedResult = new HashMap<>();
 
         Order order = new Order();
@@ -73,7 +72,7 @@ public class InventoryManagerTest {
     }
 
     @Test
-    public void proccessAllDataOfOneItem() throws DataStoreException {
+    public void proccessAllDataOfOneItem() {
         Map<OrderLine,String> lineToExpectedResult = new HashMap<>();
 
         Order order = new Order();
@@ -126,7 +125,7 @@ public class InventoryManagerTest {
     }
     
     @Test
-    public void proccessAllDataOfAllItems() throws DataStoreException {
+    public void proccessAllDataOfAllItems() {
         Map<OrderLine,String> lineToExpectedResult = new HashMap<>();
         
         Order order = new Order();

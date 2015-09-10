@@ -1,14 +1,17 @@
 package com.djrichar.runner;
 
 import com.djrichar.DataStore;
-import com.djrichar.order.InventoryItem;
 import com.djrichar.inventory.InventoryManager;
+import com.djrichar.order.InventoryItem;
 import com.djrichar.order.Order;
 import com.djrichar.order.OrderLine;
 import org.hibernate.Session;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,25 +19,26 @@ import java.util.concurrent.Executors;
 /**
  * Created by daniel on 8/27/15.
  */
-public class OrderGenerator implements Callable<String>{
+public class OrderGenerator implements Callable<String> {
 
     private static int numberOfThreads = 3;
     private List<String> itemNames;
 
-    public OrderGenerator(String... itemNames){
+    public OrderGenerator(String... itemNames) {
         this.itemNames = Arrays.asList(itemNames);
     }
 
     /**
      * helper method to randomly generate and order
+     *
      * @return
      */
-    private Order createOrder(String header){
+    private Order createOrder(String header) {
         Order order = new Order();
         order.setHeader(header);
         Random rand = new Random();
         int numberOfLineItems = rand.nextInt(10);
-        for(int i=0;i<numberOfLineItems;i++){
+        for (int i = 0; i < numberOfLineItems; i++) {
             order.addLine(
                     new OrderLine(
                             new InventoryItem(itemNames.get(rand.nextInt(itemNames.size()))),
@@ -48,7 +52,7 @@ public class OrderGenerator implements Callable<String>{
         StringBuilder runnerResults = new StringBuilder();
         InventoryManager mgr = InventoryManager.getInstance();
         int header = 1;
-        while(mgr.hasInventory()) {
+        while (mgr.hasInventory()) {
             runnerResults.append(
                     mgr.processOrder(createOrder("" + header++))
             );

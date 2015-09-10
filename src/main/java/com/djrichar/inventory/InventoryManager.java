@@ -1,7 +1,6 @@
 package com.djrichar.inventory;
 
 import com.djrichar.DataStore;
-import com.djrichar.DataStoreException;
 import com.djrichar.order.Fulfillment;
 import com.djrichar.order.InventoryItem;
 import com.djrichar.order.Order;
@@ -10,17 +9,16 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.slf4j.LoggerFactory;
 
-import javax.validation.constraints.Null;
-
 /**
  * this class is responsible for processing all Orders in the order they are relieved.
  */
 public class InventoryManager {
     private static InventoryManager INSTANCE = null;
+
     public static InventoryManager getInstance() {
-        if(INSTANCE==null){
+        if (INSTANCE == null) {
             synchronized (InventoryManager.class) {
-                if(INSTANCE==null) {
+                if (INSTANCE == null) {
                     INSTANCE = new InventoryManager();
                 }
             }
@@ -29,28 +27,30 @@ public class InventoryManager {
     }
 
     private long inventoryTotal = 0;
+
     /**
      * Singleton class
      */
     private InventoryManager() {
-            updateTotalInventory();
+        updateTotalInventory();
     }
 
     /**
      * aggergate the total instock
      */
-    private void updateTotalInventory(){
-        try(Session session = DataStore.getSessionFactory().openSession()){
-            inventoryTotal = (long)session.createCriteria(InventoryItem.class).setProjection(Projections.sum("inStock")).uniqueResult();
+    private void updateTotalInventory() {
+        try (Session session = DataStore.getSessionFactory().openSession()) {
+            inventoryTotal = (long) session.createCriteria(InventoryItem.class).setProjection(Projections.sum("inStock")).uniqueResult();
         }
     }
+
     /**
      * process one order at a time.
      * ensure the inventoryItem is updated
      * ensures the fulfillment for an orderLine is updated
      * update the inventoryTotal if an item is shipped.
      */
-    public synchronized String processOrder(Order order) throws DataStoreException {
+    public synchronized String processOrder(Order order) {
         if (!order.isValid()) {
             return "";
         }
@@ -76,7 +76,7 @@ public class InventoryManager {
                     session.update(item);
                 }
             }
-            order.setHeader(String.format("%s-%s",order.getHeader(), Thread.currentThread().getId()));
+            order.setHeader(String.format("%s-%s", order.getHeader(), Thread.currentThread().getId()));
             session.save(order);
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -86,26 +86,28 @@ public class InventoryManager {
         if (updateTotal) {
             updateTotalInventory();
         }
-        LoggerFactory.getLogger(this.getClass()).warn("updatedTotal={}, totalInventory={}",updateTotal, inventoryTotal);
+        LoggerFactory.getLogger(this.getClass()).debug("updatedTotal={}, totalInventory={}", updateTotal, inventoryTotal);
         return order.toString();
     }
 
     /**
      * if an Inventory Item has something in stock
+     *
      * @return
      */
-    public boolean hasInventory(){
+    public boolean hasInventory() {
         return inventoryTotal > 0;
     }
 
     /**
      * prints the orders that have been processed
+     *
      * @return
      */
-    public String getResults(){
+    public String getResults() {
         StringBuilder results = new StringBuilder();
-        try (Session session = DataStore.getSessionFactory().openSession()){
-            for(Object order : session.createCriteria(Order.class).list()){
+        try (Session session = DataStore.getSessionFactory().openSession()) {
+            for (Object order : session.createCriteria(Order.class).list()) {
                 results.append(order).append("\n");
             }
         }

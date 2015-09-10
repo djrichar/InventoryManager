@@ -21,24 +21,25 @@ public class OrderLine implements Serializable {
     long id;
 
     @ManyToOne
-    @JoinColumn(name="order_id")
+    @JoinColumn(name = "order_id")
     private Order order;
 
     @ManyToOne
-    @JoinColumn(name="name")
+    @JoinColumn(name = "name")
     private InventoryItem item;
 
-    @Column(name="quantity")
+    @Column(name = "quantity")
     private int quantity;
 
     @OneToOne(cascade = CascadeType.ALL, targetEntity = Fulfillment.class, mappedBy = "line")
     private Fulfillment fulfillment;
 
-    OrderLine(){/*JPA CONSTRUCTOR*/}
+    OrderLine() {/*JPA CONSTRUCTOR*/}
 
     public OrderLine(String itemName, int quantity) {
         this(new InventoryItem(itemName, 0, 0), quantity);
     }
+
     public OrderLine(InventoryItem item, int quantity) {
         this.quantity = quantity;
         this.item = item;
@@ -65,7 +66,7 @@ public class OrderLine implements Serializable {
     }
 
     public Fulfillment getFulfillment() {
-        if(fulfillment == null){
+        if (fulfillment == null) {
             fulfillment = new Fulfillment(this);
         }
         return fulfillment;
@@ -73,6 +74,31 @@ public class OrderLine implements Serializable {
 
     @Override
     public String toString() {
-        return (item==null ? "??":item.getName()) + ":" + fulfillment;
+        return (item == null ? "??" : item.getName()) + ":" + fulfillment;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof OrderLine)) return false;
+
+        OrderLine line = (OrderLine) o;
+
+        if (id != line.id) return false;
+        if (getQuantity() != line.getQuantity()) return false;
+        if (!getOrder().getHeader().equals(line.getOrder().getHeader())) return false;
+        return !(getItem() != null ?
+                !(line.getItem() != null && getItem().getName().equals(line.getItem().getName())) : line.getItem() != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + getOrder().getHeader().hashCode();
+        result = 31 * result + (getItem() != null ? getItem().getName().hashCode() : 0);
+        result = 31 * result + getQuantity();
+        return result;
     }
 }

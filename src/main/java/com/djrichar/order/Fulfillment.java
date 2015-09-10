@@ -11,9 +11,9 @@ import java.io.Serializable;
  * keeps a record of backorders after fulfillment is done
  */
 @Entity
-@Table(name="fullfillment")
+@Table(name = "fullfillment")
 public class Fulfillment implements Serializable {
-    public enum Status{
+    public enum Status {
         NOT_FILLED,
         BACKORDERED,
         FILLED
@@ -33,9 +33,9 @@ public class Fulfillment implements Serializable {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    Fulfillment(){/*JPA CONSTRUCTOR*/}
+    Fulfillment() {/*JPA CONSTRUCTOR*/}
 
-    public Fulfillment(OrderLine line){
+    public Fulfillment(OrderLine line) {
         this.line = line;
         this.status = Status.NOT_FILLED;
     }
@@ -64,11 +64,30 @@ public class Fulfillment implements Serializable {
         this.status = status;
     }
 
-    public String toString(){
-        return "{ q:"+ line.getQuantity() +
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Fulfillment)) return false;
+
+        Fulfillment that = (Fulfillment) o;
+
+        if (line != null ? !line.equals(that.line) : that.line != null) return false;
+        return getStatus() == that.getStatus();
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = line != null ? line.hashCode() : 0;
+        result = 31 * result + (getStatus() != null ? getStatus().hashCode() : 0);
+        return result;
+    }
+
+    public String toString() {
+        return "{ q:" + line.getQuantity() +
                 ", b:" + (status.equals(Status.BACKORDERED) ? line.getQuantity() : "0") +
                 ", o:" + (status.equals(Status.FILLED) ? line.getQuantity() : "0") +
                 ", stock:" + inStock +
-                ", backordered:" +backOrdered + "}";
+                ", backordered:" + backOrdered + "}";
     }
 }

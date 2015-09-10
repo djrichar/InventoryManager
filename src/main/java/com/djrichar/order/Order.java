@@ -12,17 +12,17 @@ import java.util.List;
  * and Order contains N number of OrderLines.
  */
 @Entity
-@Table(name="tOrder")
+@Table(name = "tOrder")
 public class Order implements Serializable {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(name ="header")
+    @Column(name = "header")
     private String header;
 
-    @OneToMany(cascade = {CascadeType.ALL}, fetch=FetchType.LAZY, mappedBy="order")
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "order")
     private List<OrderLine> lines = new ArrayList<>();
 
     public Long getId() {
@@ -38,9 +38,11 @@ public class Order implements Serializable {
     }
 
     public Order() {/*JPA CONSTRUCTOR*/}
+
     /**
      * get the lines for this Order
      * the List is not modifiable you must add new Lines to the order.
+     *
      * @return
      */
     public List<OrderLine> getLines() {
@@ -49,15 +51,15 @@ public class Order implements Serializable {
 
     public void addLine(OrderLine line) {
         this.lines.add(line);
-        if(line.getOrder()!=this){
+        if (line.getOrder() != this) {
             line.setOrder(this);
         }
     }
 
-    public boolean isValid(){
-        for(OrderLine line : lines){
+    public boolean isValid() {
+        for (OrderLine line : lines) {
             int quantity = line.getQuantity();
-            if(quantity < 1 || quantity > 5){
+            if (quantity < 1 || quantity > 5) {
                 return false;
             }
         }
